@@ -1,0 +1,11 @@
+# venv
+bin/
+lib64
+pyvenv.cfg
+share/
+lib/
+
+*.swp
+
+ # sigsage
+data/
