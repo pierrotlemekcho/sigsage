@@ -91,12 +91,16 @@ print(lgroupes)
 #}
 # boucle sur la liste de groupes lgroupes (ii indice ligne , jj indice colonne
 # d'excel)
+
+dict_compte_selec={}
+dic_compte_solde={}
 ii=1
 for lgroup in lgroupes:
     dgroup = {}
     dgroup = {"titre" : lgroup[0] }
     for i in range(1,len(lgroup)):
         dgroup[lgroup[i]] = dic_compte.get(lgroup[i])
+        dict_compte_selec[lgroup[i]] = dic_compte.get(lgroup[i])
 
         #print('########################')
         #print(dg1)
@@ -159,10 +163,29 @@ for lgroup in lgroupes:
             print(type(value))
     ii+=2
     
+ii+=2
+jj=1
+ws.cell(row=ii, column=jj, value ='compte NON affectés')
+
+for key, value in dic_compte.items():
+    if key not in dict_compte_selec:
+        ii+=1
+        jj=1
+        ws.cell(row=ii, column=jj, value = key)
+        for key1, value1 in value.items():
+            jj+=1
+            print(key1 ,value1)
+            ws.cell(row=ii, column=jj, value =value1)
 
 
+        
+
+
+
+
+
+print(dic_compte_solde)
 
 
 #ws['A1'] = lg1[0]
 wb.save('document.xlsx')
-
