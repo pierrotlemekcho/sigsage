@@ -10,7 +10,7 @@ DATA_FOLDER = HERE / "data"
 
 
 fec = pd.read_table(
-    DATA_FOLDER / "2023_EXPORTFEC_20230101_20231231_4.txt",
+    DATA_FOLDER / "2023_EXPORTFEC_20230101_20231231_7.txt",
     usecols = [ "EcritureDate","CompteNum","CompteLib","Debit","Credit"])
 
 

@@ -14,12 +14,71 @@ with open(DATA_FOLDER / "tableau.pkl", "rb") as tf:
 
 lcompte = list(dic_compte.keys())
 print(lcompte)
+for i in range(len(lcompte)):
+    print("indice"+str(i)+", --->"+lcompte[i])
+lgv1=['Ventes prestations',
+      lcompte[52],
+      lcompte[53],
+      lcompte[54],
+      lcompte[55],
+      lcompte[56],
+      lcompte[57],
+      lcompte[58],
+      lcompte[59],
+      lcompte[60],
+      lcompte[61],
+      lcompte[62],
+      lcompte[63]]
+lgv2=['Tansfert de charges',
+      lcompte[64],
+      lcompte[65],
+      lcompte[66]]
+lg1=['Achat Matière',
+     lcompte[0],
+     lcompte[1],
+     lcompte[2],
+     lcompte[3]]
+lg2=['Sous traitance' ,
+     lcompte[4]]
+lg3=['Couts diects chantiers',
+     lcompte[9],
+     lcompte[5],
+     lcompte[16],
+     lcompte[12],
+     lcompte[6],
+     lcompte[25],
+     lcompte[32],
+     lcompte[7]]
+lg4=['Salaire personnel de chantier',
+     lcompte[36]]
+lg5=['Charges salaire de chantier',
+     lcompte[33],
+     lcompte[38],
+     lcompte[39],
+     lcompte[41],
+     lcompte[42],
+     lcompte[44],
+     lcompte[45],
+     lcompte[34]]
+lg6=['Salaires direction',
+     lcompte[37]]
+lg7=['Charges salaires de direcion',
+    lcompte[40],
+    lcompte[43],
+    lcompte[46],
+    lcompte[47]]
+lg8=['Frais généraux',
+     lcompte[27],
+     lcompte[29],
+     lcompte[28],
+     lcompte[11],
+     lcompte[14]]
 
 
-lg1=['Achat Matière', lcompte[1],lcompte[2],lcompte[3]]
-lg2=['dummy_group' , lcompte[7],lcompte[10],lcompte[10],lcompte[20]]
 
-lgroupes=[lg1,lg2]
+
+
+lgroupes=[lgv1,lgv2,lg1,lg2,lg3,lg4,lg5,lg7,lg8]
 print(lgroupes)
 
 #p#rint('########################')
@@ -73,7 +132,7 @@ for lgroup in lgroupes:
     print(stotal)
     print('########################')
 
-    dgroup[str("Sous-total"+lgroup[0])] = stotal
+    dgroup[str("Sous-total : "+lgroup[0])] = stotal
 
     print(dgroup)
 
