@@ -171,6 +171,7 @@ for key, value in dic_compte.items():
     if key not in dict_compte_selec:
         ii+=1
         jj=1
+        lgroupes.append(key) #maj groupes avec comptes non affectées
         ws.cell(row=ii, column=jj, value = key)
         for key1, value1 in value.items():
             jj+=1
@@ -188,4 +189,8 @@ print(dic_compte_solde)
 
 
 #ws['A1'] = lg1[0]
+
 wb.save(DATA_FOLDER / 'document.xlsx')
+with open(DATA_FOLDER / "groupes.pkl", "wb") as tf1:
+    pickle.dump(lgroupes , tf1)
+
