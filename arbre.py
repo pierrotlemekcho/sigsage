@@ -29,6 +29,12 @@ def montre_selection():
             message="Selectionnez un élément"
 
 """
+def insert_groupe():
+    nom_groupe = group_entry.get()
+    print(nom_groupe)
+    #le nom de groupe ne doit pas exister
+    #
+    tree.insert('', tk.END, text=nom_groupe) 
 
 
 
@@ -36,17 +42,46 @@ def montre_selection():
 
 
 
+root = tk.Tk()
+root.title(' sigsage ')
+#root.geometry('1200x800')
 
-window =tk.Tk()
-window.title(' sigsage ')
-window.geometry('1800x1800')
+frame = ttk.Frame(root)
+frame.pack()
+
+widgets_frame = ttk.Labelframe(frame, text=" Insere un groupe de compte")
+widgets_frame.grid(row=0, column=0)
+
+group_entry = ttk.Entry(widgets_frame)
+group_entry.grid(row=0, column=0, padx=5, pady=(10,5), sticky="ew")
+group_entry.insert(0, "Groupe")
+group_entry.bind("<FocusIn>", lambda e: group_entry.delete('0', 'end'))
+group_entry.grid(row=0, column=0, sticky="ew")
+
+button = ttk.Button(widgets_frame, text="Inserer", command=insert_groupe)
+button.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
+
+
+
+
+
+
+tree_frame = ttk.Frame(frame)
+tree_frame.grid(row=0, column=1, pady=10)
+treeScroll = ttk.Scrollbar(tree_frame)
+treeScroll.pack(side="right", fill="y")
 columns = ('groupe' , 'compte')
-tree = ttk.Treeview(window ,columns=columns , show='tree headings', height=20)
+tree = ttk.Treeview(tree_frame ,columns=columns ,
+                    yscrollcommand=treeScroll.set,show='tree headings', height=20)
+treeScroll.config(command=tree.yview)
 tree.heading("#0",  text= 'root')
 tree.heading('groupe',  text= 'solde groupe')
 tree.heading('compte',  text= 'solde compte')
+tree.column("#0", width=400)
+tree.column("groupe", width=150)
+tree.column("compte", width=150)
 
-
+tree.pack()
 
 
 
@@ -74,14 +109,13 @@ for value in lgroupes:
 
 
 
-window.columnconfigure(0, weight=1)
-window.columnconfigure(1, weight=1)
-tree.grid(row=1, column=0,sticky='nsew' ) 
+#root.columnconfigure(0, weight=1)
+#root.columnconfigure(1, weight=1)
+#tree.grid(row=1, column=0,sticky='nsew' ) 
+#scrollbar = ttk.Scrollbar(root, orient=tk.VERTICAL, command=tree.yview)
+#tree.configure(yscroll=scrollbar.set)
+#scrollbar.grid(row=1, column=0, sticky='nse')
 
-scrollbar = ttk.Scrollbar(window, orient=tk.VERTICAL, command=tree.yview)
-tree.configure(yscroll=scrollbar.set)
-scrollbar.grid(row=1, column=0, sticky='nse')
-
-window.mainloop()
+root.mainloop()
 
 
