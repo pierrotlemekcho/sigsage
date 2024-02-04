@@ -34,8 +34,13 @@ def insert_groupe():
     print(nom_groupe)
     #le nom de groupe ne doit pas exister
     #
-    tree.insert('', tk.END, text=nom_groupe) 
+    tree.insert('', tk.END, text=nom_groupe, tag='groupe')
+    #reset les valeur par défaut
+    group_entry.delete(0,"end")
+    group_entry.insert(0,"Groupe")
 
+def sup_groupe():
+    pass
 
 
 
@@ -48,18 +53,24 @@ root.title(' sigsage ')
 
 frame = ttk.Frame(root)
 frame.pack()
+frame1= ttk.Labelframe(frame, text="modifier les groupes")
+frame1.grid(row=0, column=0,sticky="en")
+widgets_frame0 = ttk.Labelframe(frame1, text=" Créer un nouveau groupe de compte")
+widgets_frame0.grid(row=0, column=0)
+widgets_frame1 = ttk.Labelframe(frame1, text=" supprimer un groupe vide")
+widgets_frame1.grid(row=1, column=0, sticky="ew")
 
-widgets_frame = ttk.Labelframe(frame, text=" Insere un groupe de compte")
-widgets_frame.grid(row=0, column=0)
-
-group_entry = ttk.Entry(widgets_frame)
+group_entry = ttk.Entry(widgets_frame0)
 group_entry.grid(row=0, column=0, padx=5, pady=(10,5), sticky="ew")
 group_entry.insert(0, "Groupe")
 group_entry.bind("<FocusIn>", lambda e: group_entry.delete('0', 'end'))
 group_entry.grid(row=0, column=0, sticky="ew")
 
-button = ttk.Button(widgets_frame, text="Inserer", command=insert_groupe)
-button.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
+button = ttk.Button(widgets_frame0, text="Inserer", command=insert_groupe)
+button.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
+
+button1 = ttk.Button(widgets_frame1, text="suprimer", command=sup_groupe)
+button1.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
 
 
 
@@ -91,7 +102,8 @@ for value in lgroupes:
         item = tree.insert("",
                            tk.END,
                            text= value[0],
-                           values = ("Montant groupe","")
+                           values = ("Montant groupe",""),
+                           tag='groupe'
                           )
         print(item)
         print(value[0])
@@ -99,15 +111,20 @@ for value in lgroupes:
             item1=tree.insert(item,
                               tk.END,
                               text=value1,
-                              values = ("","solde compte")
+                              values = ("","solde compte"),
+                              tag='compte'
                              )
             print(item1 + '-----------' + value1)
     else:
-        tree.insert('', 'end', text = value, values = ("","solde compte"))
+        tree.insert('', 'end', text = value,
+                    values = ("","solde compte"),
+                   tag='compte_seul'
+                   )
 
 
 
-
+tree.tag_configure('groupe', background='lightblue')
+tree.tag_configure('compte_seul', background='orange red')
 
 #root.columnconfigure(0, weight=1)
 #root.columnconfigure(1, weight=1)
