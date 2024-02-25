@@ -7,6 +7,7 @@ DATA_FOLDER = HERE / "data"
 
 
 
+
 with open(DATA_FOLDER / "tableau.pkl", "rb") as tf:
     dic_compte = pickle.load(tf)
 
@@ -33,7 +34,19 @@ def insert_groupe():
     group_entry.insert(0,"Groupe")
 
 def sup_groupe():
-    pass
+    ''' 
+    suprimmer un groupe,gardesr les compte , les passer ses comptes en compte-seul
+    '''
+    row = tree.selection()
+    if tree.tag_has('groupe', item =row) == 1:
+        children = tree.get_children(row)
+        for child in children :
+            tree.move(child,'',index="end")
+            tree.item(child, tag ='compte_seul')
+        tree.delete(row)
+
+
+        pass
 def select_ligne():
 
     selection = tree.focus()
@@ -106,6 +119,9 @@ def get_all_children(tree, item=""):
     '''
     extraire la liste de tout les enfants dans l'ordre
     le l'arbre
+    -renvoi "children" la liste de tous les item de l'arbre non classé
+    -renvoi "tttgroupe" la liste classé dans l'orde de l'arbre des valeurs "text"
+    de chaque item
     '''
     children = tree.get_children(item)
     for child in children:
@@ -132,6 +148,36 @@ def faire_groupe(enfants):
        if tree.tag_has('compte_seul', item =enfant) == 1 :
            ttgroupe.insert(len(ttgroupe),tree.item(enfant)["text"])
     return ttgroupe
+def remplir_tree(lgroupes):
+    '''
+    populer l'arbre à partir d'une liste 
+    '''
+    for value in lgroupes:
+        if isinstance (value, list):
+            item = tree.insert("",
+                               tk.END,
+                               text= value[0],
+                               open = True,
+                               values = ("Montant groupe",""),
+                               tag='groupe'
+                              )
+            print(item)
+            print(value[0])
+            for value1 in value[1:]:
+                item1=tree.insert(item,
+                                  tk.END,
+                                  text=value1,
+                                  open=True,
+                                  values = ("","solde compte"),
+                                  tag='compte'
+                                 )
+                print(item1 + '-----------' + value1)
+        else:
+            tree.insert('', 'end', text = value,
+                        open=True,
+                        values = ("","solde compte"),
+                       tag='compte_seul'
+                       )
         
 
 root = tk.Tk()
@@ -205,38 +251,12 @@ tree.heading('compte',  text= 'solde compte')
 tree.column("#0", width=400)
 tree.column("groupe", width=150)
 tree.column("compte", width=150)
-
+# remplir l'arbre
+remplir_tree(lgroupes)
 tree.pack(expand=True,fill="y")
 
 
 
-
-for value in lgroupes:
-    if isinstance (value, list):
-        item = tree.insert("",
-                           tk.END,
-                           text= value[0],
-                           open = True,
-                           values = ("Montant groupe",""),
-                           tag='groupe'
-                          )
-        print(item)
-        print(value[0])
-        for value1 in value[1:]:
-            item1=tree.insert(item,
-                              tk.END,
-                              text=value1,
-                              open=True,
-                              values = ("","solde compte"),
-                              tag='compte'
-                             )
-            print(item1 + '-----------' + value1)
-    else:
-        tree.insert('', 'end', text = value,
-                    open=True,
-                    values = ("","solde compte"),
-                   tag='compte_seul'
-                   )
 
 
 
@@ -244,6 +264,9 @@ tree.tag_configure('groupe', background='lightblue')
 tree.tag_configure('compte_seul', background='orange red')
 
 tree.bind("<ButtonRelease-1>", clicker)
+
+
+
 tttgroupe=[]
 print("""""""""""""""""""""""""""""")
 aa,xx=get_all_children(tree)
