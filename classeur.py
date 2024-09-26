@@ -101,7 +101,6 @@ for lgroup in lgroupes:
     for i in range(1,len(lgroup)):
         dgroup[lgroup[i]] = dic_compte.get(lgroup[i])
         dict_compte_selec[lgroup[i]] = dic_compte.get(lgroup[i])
-
         #print('########################')
         #print(dg1)
         #print('########################')

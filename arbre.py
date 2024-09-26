@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import filedialog
 from pathlib import Path
 import pickle 
 HERE = Path(__file__).parent
 DATA_FOLDER = HERE / "data"
 
 
+l_lgroupes = []
+tttgroupe=[]
 
 
 with open(DATA_FOLDER / "tableau.pkl", "rb") as tf:
@@ -17,9 +20,6 @@ print(lcompte)
 
 
 
-with open(DATA_FOLDER / "groupes.pkl", "rb") as tf:
-    lgroupes = pickle.load(tf)
-print(lgroupes)
 
 def insert_groupe():
     nom_groupe = group_entry.get()
@@ -113,7 +113,28 @@ def down():
             tree.move(rowd, rowd_next, tree.index(rowd)+1)
 
 def charger_file():
-    pass
+    select_file = filedialog.askopenfilename(parent=root,
+                                             filetypes=[("Fichier SIG",".pkl")],
+                                             initialdir=DATA_FOLDER)
+    print(select_file)
+    with open(select_file, "rb") as tf:
+        lgroupes = pickle.load(tf)
+    print(lgroupes)
+    print("--------")
+    remplir_tree(lgroupes)
+
+
+def sauver_file():
+    select_file = filedialog.asksaveasfilename(parent=root,
+                                             filetypes=[("Fichier SIG",".pkl")],
+                                             initialdir=DATA_FOLDER)
+    print(select_file)
+    xxx,yyy = get_all_children(tree)
+    lgroupes=faire_groupe(yyy)
+    with open(select_file, "wb") as tf1:
+        pickle.dump(lgroupes,tf1)
+    
+
 
 def get_all_children(tree, item=""):
     '''
@@ -148,6 +169,7 @@ def faire_groupe(enfants):
        if tree.tag_has('compte_seul', item =enfant) == 1 :
            ttgroupe.insert(len(ttgroupe),tree.item(enfant)["text"])
     return ttgroupe
+
 def remplir_tree(lgroupes):
     '''
     populer l'arbre à partir d'une liste 
@@ -219,13 +241,20 @@ button_up.grid(row=1, column=0, padx=5, pady=5, sticky="nsew")
 button_down = ttk.Button(widgets_frame12 , text="descendre", command=down)
 button_down.grid(row=2, column=0, padx=5, pady=5, sticky="nsew")
 #-------------------------frame2
-frame2= ttk.Labelframe(frame, text="importer les  fichiers")
-frame2.grid(row=0, column=0, sticky="enw")
-widgets_frame20 = ttk.Labelframe(frame2, text=" Charger un fichier de solde")
-widgets_frame20.grid(row=0, column=0, sticky="nsew")
-button_imp = ttk.Button(widgets_frame20, text="Charger", command=charger_file)
+frame2= ttk.Labelframe(frame, text="utiliser des  fichiers SIG ")
+frame2.grid(row=0, column=0,sticky="we")
+widgets_frame20 = ttk.Labelframe(frame2,
+                                 text=" Charger un fichier existant les comptes seront MAJ")
+widgets_frame20.grid(row=0, column=0,sticky="w" )
+button_imp = ttk.Button(widgets_frame20,
+                        text="Charger",
+                        command=charger_file)
 button_imp.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
 
+widgets_frame21 = ttk.Labelframe(frame2, text=" sauver un fichier de solde")
+widgets_frame21.grid(row=1, column=0, sticky="nsew")
+button_imp = ttk.Button(widgets_frame21, text="sauver", command=sauver_file)
+button_imp.grid(row=0, column=0, padx=5, pady=5, sticky="nsew")
 
 
 
@@ -249,10 +278,8 @@ tree.heading("#0",  text= 'root')
 tree.heading('groupe',  text= 'solde groupe')
 tree.heading('compte',  text= 'solde compte')
 tree.column("#0", width=400)
-tree.column("groupe", width=150)
-tree.column("compte", width=150)
-# remplir l'arbre
-remplir_tree(lgroupes)
+#remplir l'arbre
+lgroupes = l_lgroupes
 tree.pack(expand=True,fill="y")
 
 
@@ -267,11 +294,6 @@ tree.bind("<ButtonRelease-1>", clicker)
 
 
 
-tttgroupe=[]
 print("""""""""""""""""""""""""""""")
-aa,xx=get_all_children(tree)
-yy = faire_groupe(xx)
 print("ààààààààààààààààà")
-print(yy)
-
 root.mainloop()
