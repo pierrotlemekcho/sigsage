@@ -178,7 +178,6 @@ for key, value in dic_compte.items():
             ws.cell(row=ii, column=jj, value =value1)
 
 
-        
 
 
 
